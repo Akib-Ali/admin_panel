@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import {
   CCard,
   CCardBody,
@@ -9,6 +10,7 @@ import {
   CTableBody,
   CTableCaption,
   CTableDataCell,
+  CCardImage,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
@@ -16,6 +18,17 @@ import {
 import { DocsExample } from 'src/components'
 
 const Tables = () => {
+  const [blogList, setBlogList] = useState([])
+
+  useEffect(() => {
+    getBlog()
+  }, [])
+  const getBlog = async () => {
+    let result = await fetch('http://localhost:8005/blog-list')
+    result = await result.json()
+    setBlogList(result)
+  }
+  console.log(blogList, `rESCIVED BLOG LIST`)
   return (
     <CRow>
       <CCol xs={12}>
@@ -33,29 +46,32 @@ const Tables = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Class</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Picture</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Blog Category</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Blog Title</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Blog Slug</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  <CTableRow>
+                  {/* <CTableRow>
                     <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>Mark</CTableDataCell>
-                    <CTableDataCell>Otto</CTableDataCell>
+                    <CTableDataCell>Marked</CTableDataCell>
+                    <CTableDataCell>Ottoyyyy</CTableDataCell>
                     <CTableDataCell>@mdo</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                    <CTableDataCell>Jacob</CTableDataCell>
-                    <CTableDataCell>Thornton</CTableDataCell>
-                    <CTableDataCell>@fat</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                    <CTableDataCell colSpan="2">Larry the Bird</CTableDataCell>
-                    <CTableDataCell>@twittersss</CTableDataCell>
-                  </CTableRow>
+                  </CTableRow> */}
+                  {blogList.map((elem, index) => {
+                    return (
+                      <CTableRow key={elem.id}>
+                        <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                        <CTableDataCell>
+                          <CCardImage src={`/uploads/${elem.image}`} height="50px" width="20px" />
+                        </CTableDataCell>
+                        <CTableDataCell>{elem.title}</CTableDataCell>
+                        <CTableDataCell>{elem.category}</CTableDataCell>
+                        <CTableDataCell>{elem.blog}</CTableDataCell>
+                      </CTableRow>
+                    )
+                  })}
                 </CTableBody>
               </CTable>
             </DocsExample>
