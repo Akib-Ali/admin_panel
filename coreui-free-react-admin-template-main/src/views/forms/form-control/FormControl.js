@@ -55,8 +55,8 @@ const FormControl = () => {
                   <CFormInput
                     type="file"
                     id="exampleFormControlInput1"
-                    name="image"
-                    onChange={(e) => setImage(e.target.files)}
+                    name="photo"
+                    onChange={(e) => setImage(e.target.files[0])}
                   />
                 </div>
                 <div className="mb-3">
